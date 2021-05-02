@@ -33,6 +33,11 @@ body {
   background-color: rgb(40, 37, 53);
 }
 
+.App .home {
+  text-decoration: none;
+  color: white;
+}
+
 main {
   padding: 10px;
   height: 80vh;
@@ -70,7 +75,6 @@ form button {
   background-color: rgb(56, 56, 143);
 }
 
-
 input {
   line-height: 1.5;
   width: 100%;
@@ -99,7 +103,6 @@ button:disabled {
   cursor: not-allowed;
 }
 
-
 .sign-in {
   color: #282c34;
   background: white;
@@ -107,10 +110,8 @@ button:disabled {
   margin: 0 auto;
 }
 
-
-
-
-ul, li {
+ul,
+li {
   text-align: left;
   list-style: none;
 }
@@ -130,7 +131,6 @@ p {
   display: flex;
   align-items: center;
 }
-
 
 .sent {
   flex-direction: row-reverse;
@@ -153,3 +153,24 @@ img {
   margin: 2px 5px;
 }
 
+.collections h2 {
+  font-size: 4rem;
+  color: whitesmoke;
+}
+
+.collections ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  color: white;
+}
+
+.collections ul li {
+  font-size: 16px;
+  color: white;
+  padding: 0.5em;
+  border: 1px solid whitesmoke;
+  border-radius: 10px;
+  cursor: pointer;
+}
