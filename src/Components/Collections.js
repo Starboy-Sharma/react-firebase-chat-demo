@@ -45,25 +45,6 @@ export default function Collections({ firestore, auth }) {
   };
 
   useEffect(() => {
-    const res = [
-      {
-        id: 1,
-        name: "messages",
-      },
-      {
-        id: 2,
-        name: "messages1",
-      },
-      {
-        id: 3,
-        name: "messages2",
-      },
-      {
-        id: 4,
-        name: "messages3",
-      },
-    ];
-
     getRooms()
       .then((response) => {
         const rooms = formatResponse(response?.data?.data);
