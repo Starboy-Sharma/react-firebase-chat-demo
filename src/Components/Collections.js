@@ -1,6 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
+import { getRooms } from "../Services/rooms";
 import ChatRoom from "./ChatRoom";
+
+const formatResponse = function (response) {
+  if ("data" in response === false) return [];
+
+  const res = response.data;
+  let room_data = [];
+
+  const videoJsons = res.map((item) => {
+    return { videoObj: JSON.parse(item.videoJson), liveId: item.liveId };
+  });
+
+  // thumbnail - default, title, livevideourl
+  const documents = videoJsons.map((video) => {
+    let items = video?.videoObj?.items;
+
+    if (items.length > 0) {
+      let document = {
+        liveId: video.liveId,
+        title: items[0]?.snippet?.title,
+        thumbnail: items[0]?.snippet?.thumbnails,
+      };
+
+      console.log(document);
+
+      return document;
+    }
+  });
+  console.log(documents);
+};
 
 export default function Collections({ firestore, auth }) {
   const [room, setRoom] = useState("");
@@ -30,6 +60,12 @@ export default function Collections({ firestore, auth }) {
         name: "messages3",
       },
     ];
+
+    getRooms()
+      .then((response) => {
+        formatResponse(response?.data?.data);
+      })
+      .catch((err) => console.error(err));
 
     setDocuments(res);
   }, []);
