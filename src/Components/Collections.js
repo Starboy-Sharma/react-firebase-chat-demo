@@ -4,32 +4,35 @@ import { getRooms } from "../Services/rooms";
 import ChatRoom from "./ChatRoom";
 
 const formatResponse = function (response) {
-  if ("data" in response === false) return [];
+  try {
+    if ("data" in response === false) return [];
 
-  const res = response.data;
-  let room_data = [];
+    const res = response.data;
 
-  // console.log(res)
+    const videoJsons = res.map((item) => {
+      return { videoObj: JSON.parse(item.videoJson), liveUrl: item.liveUrl };
+    });
 
-  const videoJsons = res.map((item) => {
-    return { videoObj: JSON.parse(item.videoJson), liveUrl: item.liveUrl };
-  });
+    // thumbnail - default, title, livevideourl
+    const documents = videoJsons.map((video) => {
+      let items = video?.videoObj?.items;
 
-  // thumbnail - default, title, livevideourl
-  const documents = videoJsons.map((video) => {
-    let items = video?.videoObj?.items;
+      if (items.length > 0) {
+        let document = {
+          liveUrl: video.liveUrl,
+          title: items[0]?.snippet?.title,
+          thumbnail: items[0]?.snippet?.thumbnails,
+        };
 
-    if (items.length > 0) {
-      let document = {
-        liveUrl: video.liveUrl,
-        title: items[0]?.snippet?.title,
-        thumbnail: items[0]?.snippet?.thumbnails,
-      };
+        return document;
+      }
+    });
 
-      return document;
-    }
-  });
-  console.log(documents);
+    return documents;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 };
 
 export default function Collections({ firestore, auth }) {
@@ -37,7 +40,7 @@ export default function Collections({ firestore, auth }) {
   const [documents, setDocuments] = useState([]);
 
   const handleDocument = (document) => {
-    setRoom(document.name);
+    setRoom(document.liveUrl);
     console.log("hello", document);
   };
 
@@ -63,11 +66,14 @@ export default function Collections({ firestore, auth }) {
 
     getRooms()
       .then((response) => {
-        formatResponse(response?.data?.data);
+        const rooms = formatResponse(response?.data?.data);
+        console.log(rooms);
+        setDocuments(rooms);
       })
-      .catch((err) => console.error(err));
-
-    setDocuments(res);
+      .catch((err) => {
+        console.error(err);
+        setDocuments([]);
+      });
   }, []);
 
   return (
@@ -82,13 +88,19 @@ export default function Collections({ firestore, auth }) {
         ) : (
           <div className="collections">
             <h2> Choose Rooms </h2>
-            <ul>
+            <div className="rooms-container">
               {documents.map((document) => (
-                <li key={document.id} onClick={() => handleDocument(document)}>
-                  <Link to={"rooms/" + document.name}>{document.name}</Link>
-                </li>
+                <div
+                  className="room"
+                  key={document.liveUrl}
+                  onClick={() => handleDocument(document)}
+                >
+                  <Link to={"rooms/" + document.liveUrl}>
+                    <img src={document.thumbnail.high.url} alt="rooms" />
+                  </Link>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         )}
       </BrowserRouter>

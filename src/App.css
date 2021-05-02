@@ -158,19 +158,11 @@ img {
   color: whitesmoke;
 }
 
-.collections ul {
-  list-style-type: none;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  color: white;
-}
-
-.collections ul li {
-  font-size: 16px;
-  color: white;
-  padding: 0.5em;
-  border: 1px solid whitesmoke;
-  border-radius: 10px;
-  cursor: pointer;
+.room img {
+  max-width: 300px;
+  border-radius: unset;
+  max-height: 300px;
+  height: auto;
+  width: inherit;
+  margin-bottom: 8px;
 }
