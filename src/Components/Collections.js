@@ -9,8 +9,10 @@ const formatResponse = function (response) {
   const res = response.data;
   let room_data = [];
 
+  // console.log(res)
+
   const videoJsons = res.map((item) => {
-    return { videoObj: JSON.parse(item.videoJson), liveId: item.liveId };
+    return { videoObj: JSON.parse(item.videoJson), liveUrl: item.liveUrl };
   });
 
   // thumbnail - default, title, livevideourl
@@ -19,12 +21,10 @@ const formatResponse = function (response) {
 
     if (items.length > 0) {
       let document = {
-        liveId: video.liveId,
+        liveUrl: video.liveUrl,
         title: items[0]?.snippet?.title,
         thumbnail: items[0]?.snippet?.thumbnails,
       };
-
-      console.log(document);
 
       return document;
     }
