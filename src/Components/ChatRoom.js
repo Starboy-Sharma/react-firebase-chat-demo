@@ -1,29 +1,36 @@
-import React, { useRef, useState } from "react";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import React, { useRef, useState, useEffect } from "react";
 
 import ChatMessage from "./ChatMessage";
 import firebase from "firebase/app";
-import "firebase/firestore";
+import "firebase/database";
 import "firebase/auth";
-import "firebase/analytics";
 
 function ChatRoom({ firestore, auth, collection }) {
   const dummy = useRef();
-  const messagesRef = firestore.collection(collection);
-  const query = messagesRef.orderBy("createdAt").limit(25);
+  const messagesRef = firestore.ref(collection);
 
-  const [messages] = useCollectionData(query, { idField: "id" });
+  useEffect(() => {
+    messagesRef.on("value", (snapshot) => {
+      let chats = [];
+      snapshot.forEach((snap) => {
+        chats.push(snap.val());
+      });
+      console.log(chats);
+      setMessages(chats);
+    });
+  }, []);
 
   const [formValue, setFormValue] = useState("");
+  const [messages, setMessages] = useState([]);
 
   const sendMessage = async (e) => {
     e.preventDefault();
 
     const { uid, photoURL } = auth.currentUser;
 
-    await messagesRef.add({
+    await messagesRef.push({
       text: formValue,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdAt: firebase.database.ServerValue.TIMESTAMP,
       uid,
       photoURL,
     });
@@ -36,8 +43,8 @@ function ChatRoom({ firestore, auth, collection }) {
     <>
       <main>
         {messages &&
-          messages.map((msg) => (
-            <ChatMessage key={msg.id} auth={auth} message={msg} />
+          messages.map((msg, index) => (
+            <ChatMessage key={index} auth={auth} message={msg} />
           ))}
 
         <span ref={dummy}></span>

@@ -2,9 +2,8 @@ import React from "react";
 import "./App.css";
 
 import firebase from "firebase/app";
-import "firebase/firestore";
+import "firebase/database";
 import "firebase/auth";
-import "firebase/analytics";
 
 import SignIn from "./Components/SignIn";
 import SignOut from "./Components/SignOut";
@@ -24,7 +23,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
-const firestore = firebase.firestore();
+const firestore = firebase.database();
 // const analytics = firebase.analytics();
 
 function App() {
