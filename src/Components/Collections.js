@@ -62,8 +62,8 @@ export default function Collections({ firestore, auth }) {
       <BrowserRouter>
         {room ? (
           <Switch>
-            <Route path="/rooms/:name">
-              <ChatRoom firestore={firestore} auth={auth} collection={room} />
+            <Route path="/rooms/:id">
+              <ChatRoom firestore={firestore} auth={auth} />
             </Route>
           </Switch>
         ) : (

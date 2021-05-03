@@ -1,15 +1,19 @@
 import React from "react";
 import "./App.css";
 
+import Home from "./Components/Home";
+import ChatRoom from "./Components/ChatRoom";
+
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
 import firebase from "firebase/app";
 import "firebase/database";
 import "firebase/auth";
 
-import SignIn from "./Components/SignIn";
-import SignOut from "./Components/SignOut";
-import Collections from "./Components/Collections";
+// import SignIn from "./SignIn";
+// import SignOut from "./SignOut";
 
-import { useAuthState } from "react-firebase-hooks/auth";
+// import { useAuthState } from "react-firebase-hooks/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAqhtfjDvHQAzOv4iZ-gNirwoWdaoTxVPY",
@@ -24,28 +28,29 @@ firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 const firestore = firebase.database();
-// const analytics = firebase.analytics();
 
 function App() {
-  const [user] = useAuthState(auth);
-
   return (
     <div className="App">
-      <header>
-        <h1>⚛️🔥💬</h1>
-        <SignOut auth={auth} />
-        <a href="/" className="home">
-          Home
-        </a>
-      </header>
-
-      <section>
-        {user ? (
-          <Collections firestore={firestore} auth={auth} />
-        ) : (
-          <SignIn auth={auth} />
-        )}
-      </section>
+      <Router>
+        <header>
+          <h1>⚛️🔥💬</h1>
+          {/* <SignOut auth={auth} /> */}
+          <Link to="/" className="home">
+            Home
+          </Link>
+        </header>
+        <Switch>
+          <Route path="/" exact>
+            <Home firestore={firestore} auth={auth} />
+          </Route>
+        </Switch>
+        <Switch>
+          <Route path="/rooms/:id">
+            <ChatRoom firestore={firestore} auth={auth} />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }

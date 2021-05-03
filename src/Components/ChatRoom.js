@@ -1,11 +1,17 @@
 import React, { useRef, useState, useEffect } from "react";
 
 import ChatMessage from "./ChatMessage";
+
 import firebase from "firebase/app";
 import "firebase/database";
 import "firebase/auth";
 
-function ChatRoom({ firestore, auth, collection }) {
+import { useParams } from "react-router-dom";
+
+function ChatRoom({ firestore, auth }) {
+  const { id } = useParams();
+  const collection = id;
+
   const dummy = useRef();
   const messagesRef = firestore.ref(collection);
 
