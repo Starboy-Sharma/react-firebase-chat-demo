@@ -10,18 +10,15 @@ import firebase from "firebase/app";
 import "firebase/database";
 import "firebase/auth";
 
-// import SignIn from "./SignIn";
-// import SignOut from "./SignOut";
-
-// import { useAuthState } from "react-firebase-hooks/auth";
+console.log(process.env);
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAqhtfjDvHQAzOv4iZ-gNirwoWdaoTxVPY",
-  authDomain: "react-firebase-chat-demo-70656.firebaseapp.com",
-  projectId: "react-firebase-chat-demo-70656",
-  storageBucket: "react-firebase-chat-demo-70656.appspot.com",
-  messagingSenderId: "645258239117",
-  appId: "1:645258239117:web:a691a7967c34d4262a16c4",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGE_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 firebase.initializeApp(firebaseConfig);
