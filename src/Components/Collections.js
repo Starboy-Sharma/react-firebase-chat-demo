@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import { getRooms } from "../Services/rooms";
 import ChatRoom from "./ChatRoom";
 
@@ -59,32 +59,28 @@ export default function Collections({ firestore, auth }) {
 
   return (
     <>
-      <BrowserRouter>
-        {room ? (
-          <Switch>
-            <Route path="/rooms/:id">
-              <ChatRoom firestore={firestore} auth={auth} />
-            </Route>
-          </Switch>
-        ) : (
-          <div className="collections">
-            <h2> Choose Rooms </h2>
-            <div className="rooms-container">
-              {documents.map((document) => (
-                <div
-                  className="room"
-                  key={document.liveUrl}
-                  onClick={() => handleDocument(document)}
-                >
-                  <Link to={"rooms/" + document.liveUrl}>
-                    <img src={document.thumbnail.high.url} alt="rooms" />
-                  </Link>
-                </div>
-              ))}
-            </div>
+      {room ? (
+        <Route path="/rooms/:id">
+          <ChatRoom firestore={firestore} auth={auth} />
+        </Route>
+      ) : (
+        <div className="collections">
+          <h2> Choose Rooms </h2>
+          <div className="rooms-container">
+            {documents.map((document) => (
+              <div
+                className="room"
+                key={document.liveUrl}
+                onClick={() => handleDocument(document)}
+              >
+                <Link to={"rooms/" + document.liveUrl}>
+                  <img src={document.thumbnail.high.url} alt="rooms" />
+                </Link>
+              </div>
+            ))}
           </div>
-        )}
-      </BrowserRouter>
+        </div>
+      )}
     </>
   );
 }

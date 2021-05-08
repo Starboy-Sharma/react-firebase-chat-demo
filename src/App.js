@@ -4,7 +4,7 @@ import "./App.css";
 import Home from "./Components/Home";
 import ChatRoom from "./Components/ChatRoom";
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 
 import firebase from "firebase/app";
 import "firebase/database";
@@ -28,8 +28,8 @@ const firestore = firebase.database();
 
 function App() {
   return (
-    <div className="App">
-      <Router>
+    <Router>
+      <div className="App">
         <header>
           <h1>⚛️🔥💬</h1>
           {/* <SignOut auth={auth} /> */}
@@ -38,17 +38,20 @@ function App() {
           </Link>
         </header>
         <Switch>
-          <Route path="/" exact>
-            <Home firestore={firestore} auth={auth} />
-          </Route>
-        </Switch>
-        <Switch>
+          <Route
+            exact={true}
+            path="/"
+            render={() => {
+              return <Home firestore={firestore} auth={auth} />;
+            }}
+          />
+
           <Route path="/rooms/:id">
             <ChatRoom firestore={firestore} auth={auth} />
           </Route>
         </Switch>
-      </Router>
-    </div>
+      </div>
+    </Router>
   );
 }
 
